@@ -143,6 +143,20 @@ export default defineCloudflareConfig({
 });
 ```
 
+### Package Scripts (`package.json`)
+Add the following scripts to your `package.json` to facilitate deployment and preview.
+
+```json
+{
+  "scripts": {
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare upload",
+    "secrets:upload": "wrangler secret bulk .env",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview"
+  }
+}
+```
+
 ---
 
 ## 🖼️ 3. Image Optimization (Dashboard)
