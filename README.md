@@ -1,6 +1,6 @@
 # 🚀 Vercel to Cloudflare Migration Guide
 
-This guide details the transition of the `dracufolio` project from Vercel to **Cloudflare Workers**, utilizing **OpenNext** for full Next.js feature compatibility.
+This guide details the transition of the `my-next-app` project from Vercel to **Cloudflare Workers**, utilizing **OpenNext** for full Next.js feature compatibility.
 
 ---
 
@@ -28,7 +28,7 @@ Before modifying the codebase, ensure the following Cloudflare resources are pro
 
 ### Domain
 *   **Action:** Transfer or point your domain to Cloudflare.
-*   **Target:** `nevil.dev`
+*   **Target:** `example.com`
 
 ### Storage & Caching
 OpenNext requires specific bindings for incremental caching and revalidation.
@@ -36,13 +36,13 @@ OpenNext requires specific bindings for incremental caching and revalidation.
 #### **A. R2 Bucket (Incremental Cache)**
 Used for storing ISR/SSG pages and optimized images.
 ```bash
-pnpx wrangler r2 bucket create dracufolio-next-cache
+pnpx wrangler r2 bucket create my-next-app-next-cache
 ```
 
 #### **B. D1 Database (Tag Cache)**
 Used for on-demand revalidation (`revalidatePath` / `revalidateTag`).
 ```bash
-pnpx wrangler d1 create dracufolio_next_d1_next_cache
+pnpx wrangler d1 create my-next-app_next_d1_next_cache
 ```
 > [!IMPORTANT]
 > Note the `database_id` from the command output; you will need it for the `wrangler.jsonc` file.
@@ -77,7 +77,7 @@ Create a `wrangler.jsonc` file in your root directory to define the environment 
 ```jsonc
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "dracufolio",
+  "name": "my-next-app",
   "main": ".open-next/worker.js",
   "compatibility_date": "2024-12-30",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
@@ -88,13 +88,13 @@ Create a `wrangler.jsonc` file in your root directory to define the environment 
   "r2_buckets": [
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "dracufolio-next-cache",
+      "bucket_name": "my-next-app-next-cache",
     },
   ],
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "dracufolio",
+      "service": "my-next-app",
     },
   ],
   "durable_objects": {
@@ -114,8 +114,8 @@ Create a `wrangler.jsonc` file in your root directory to define the environment 
   "d1_databases": [
     {
       "binding": "NEXT_TAG_CACHE_D1",
-      "database_name": "dracufolio_next_d1_next_cache",
-      "database_id": "6eb9522e-903f-4555-84f4-78e07c5a2000",
+      "database_name": "my-next-app_next_d1_next_cache",
+      "database_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
     },
   ],
   "images": {
@@ -152,7 +152,7 @@ To support `next/image` effectively on Cloudflare, configure these rules in your
 ### Step 1: Page Rule (Cache Images)
 Caches optimized images at the edge to reduce Worker invocations.
 
-*   **URL:** `nevil.dev/_next/image?*`
+*   **URL:** `example.com/_next/image?*`
 *   **Setting:** Cache Level → **Cache Everything**
 *   **Edge Cache TTL:** 7 Days (or preferred duration)
 
