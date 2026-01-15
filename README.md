@@ -215,8 +215,8 @@ The default Next.js image optimization (`/_next/image`) runs inside the Worker u
 ---
 
 ## 📚 References
-
 *   [OpenNext Cloudflare Documentation](https://opennext.js.org/cloudflare)
+*   [Image Optimization Cloudflare Docs for Next/Image]([https://opennext.js.org/cloudflare](https://developers.cloudflare.com/images/transform-images/integrate-with-frameworks/))
 *   [Next.js Image Optimization with Cloudflare](https://st4ng.medium.com/how-to-use-next-js-image-optimization-with-cloudflare-569da7b3ddc6)
 *   [Video Tutorial Reference](https://www.youtube.com/watch?v=Ja_ycZsYH0o)
 
